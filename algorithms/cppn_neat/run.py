@@ -48,7 +48,7 @@ def main():
     if 'geometry' in args.optimize_design_types:
         config.genome_config.num_outputs += 2
     if 'actuator' in args.optimize_design_types:
-        with open(os.path.join(f'dsrc/configs/env_configs/{args.env}', args.env_config_file), 'r') as f:
+        with open(os.path.join(f'softzoo/configs/env_configs', args.env_config_file), 'r') as f:
             env_config = yaml.safe_load(f)
         n_actuators = env_config['ENVIRONMENT']['design_space_config']['n_actuators']
         config.genome_config.num_outputs += n_actuators
@@ -90,7 +90,7 @@ def parse_args():
     parser.add_argument('--torch-seed', type=int, default=100)
     parser.add_argument('--out-dir', type=str, default='/tmp/tmp')
     # Optimization
-    parser.add_argument('--config-path', type=str, default='./config/neat_passive_dynamics.cfg')
+    parser.add_argument('--config-path', type=str, default='./config/neat.cfg')
     parser.add_argument('--num-workers', type=int, default=0) # 0 for using local worker only (good for debugging)
     parser.add_argument('--max-evaluations', type=int, default=100)
     parser.add_argument('--coords-inp', nargs='+', type=str, default=['x', 'y', 'z', 'd_xy', 'd_yz', 'd_xz', 'd_xyz'])
@@ -153,16 +153,16 @@ class Optim:
 
     def make_env(self, args):
         if args.env == 'land_environment':
-            from dsrc.envs.land_environment import LandEnvironment
+            from softzoo.envs.land_environment import LandEnvironment
             env_cls = LandEnvironment
         elif args.env == 'aquatic_environment':
-            from dsrc.envs.aquatic_environment import AquaticEnvironment
+            from softzoo.envs.aquatic_environment import AquaticEnvironment
             env_cls = AquaticEnvironment
         elif args.env == 'subterrain_environment':
-            from dsrc.envs.subterrain_environment import SubterrainEnvironment
+            from softzoo.envs.subterrain_environment import SubterrainEnvironment
             env_cls = SubterrainEnvironment
         elif args.env == 'dummy_env':
-            from dsrc.envs.dummy_env import DummyEnv
+            from softzoo.envs.dummy_env import DummyEnv
             env_cls = DummyEnv
         else:
             raise NotImplementedError
@@ -289,7 +289,9 @@ class Optim:
             
             if 'actuator' in design.keys():
                 actuator_idcs = design['actuator'][:,mask].argmax(0)
-                base_colors = np.array(mpl.cm.get_cmap('tab20').colors + mpl.cm.get_cmap('tab20b').colors + mpl.cm.get_cmap('tab20c').colors)
+                base_colors = np.array(mpl.colormaps.get_cmap('tab20').colors + \
+                                       mpl.colormaps.get_cmap('tab20b').colors + \
+                                       mpl.colormaps.get_cmap('tab20c').colors)
                 colors = base_colors[actuator_idcs]
                 pcd.colors = o3d.utility.Vector3dVector(colors)
         except:

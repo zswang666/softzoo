@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 WORKSPACE=${HOME}/workspace/softzoo
 LOG_ROOT=${WORKSPACE}/local/rl
 YAML_FILE=${WORKSPACE}/algorithms/rl/hyperparams/ver0/ppo_sin_2.yml

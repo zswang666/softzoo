@@ -31,6 +31,10 @@ $ pip install -r requirments.txt
 * [stable-baselines3-1.4.0](https://stable-baselines3.readthedocs.io/en/master/)
 * [huggingface-sb3-2.2.4](https://pypi.org/project/huggingface-sb3/)
 * [optuna-3.0.0](https://pypi.org/project/optuna/)
+* [texturize-0.12](https://github.com/texturedesign/texturize)
+* [pytorch3d-0.7.2](https://pypi.org/search/?q=pytorch3d)
+* [roma-1.3.1](https://pypi.org/project/roma/)
+* [neat-python-0.92](https://neat-python.readthedocs.io/en/latest/installation.html)
 ### Install SoftZoo.
 ```
 $ git clone git@github.com:zswang666/softzoo.git
@@ -38,8 +42,17 @@ $ cd softzoo/
 $ pip install -e .
 ```
 
-## (TODO) Download Assets
-Mention where the assets are from.
+## Download Assets
+Download the assets from [drive](https://drive.google.com/drive/folders/1AYeZsr2ZMb1DkeOndQM0nBlNfx7dorUL?usp=sharing) and put them in [./softzoo/assets](./softzoo/assets). They should follow the folder structure,
+```
+├── assets
+│   ├── meshes
+│       ├── pcd
+│       ├── ...
+│   ├── textures
+│   ├── ...
+```
+Some animal meshes are from [https://www.davidoreilly.com/library](https://www.davidoreilly.com/library).
 
 ## Running Experiments
 ### Control optimization with differentiable physics.
@@ -50,14 +63,36 @@ $ bash scripts/diffsim_with_annotated_pcd.sh
 ### Control optimization with reinforcement learning
 Use reinforcement to optimize the control of an animal-like robot with human-annotated muscle placement and direction. We adapt implementation from `stable-baselines3` and use PPO for the experiments in the paper.
 
-Additionally required packages: seaborn, stable-baselines3, optuna, huggingface_sb3
+Additionally required packages: `seaborn`, `stable-baselines3`, `optuna`, `huggingface_sb3`.
 ```
 $ bash scripts/rl_with_annotated_pcd.sh 
 ```
 
-### (TODO) Co-design / design optimization with differentiable physics.
+### Co-design / design optimization with differentiable physics.
+Perform co-design or design optimization with various design space representation using differentiable physics.
 
-### (TODO) Co-design with evolutionary algorithm.
+Download pre-trained controller for swimmer from [drive](https://drive.google.com/drive/folders/1EuAZW0TaxIk3KnsFQrcSvbzvvTTQPaQr?usp=share_link) and put it in `./local/` or any other place if changing the bash script accordingly.
+
+Additionally required packages: `pytorch3d`, `roma`.
+```
+$ bash scripts/design_opt_implicit_func.sh
+$ bash scripts/design_opt_diff_cppn.sh
+$ bash scripts/design_opt_sdf_basis.sh
+$ bash scripts/design_opt_wass_barycenter.sh
+```
+
+### Co-design with evolutionary algorithm.
+Other than gradient-based method via differentiable physics (first-order) or reinforcement learning (zeroth-order), we can also perform co-design optimization with evolutionary algorithm. We implemented a well-known algorithm [CPPN-NEAT](https://neat-python.readthedocs.io/en/latest/index.html), adapted from its [pytorch version](https://github.com/uber-research/PyTorch-NEAT).
+
+Additionally required packages: `neat-python`.
+
+```
+$ bash scripts/cppn_neat.sh
+```
+We can also visualize robot design from genome.
+```
+$ python -m algorithms.cppn_neat.tools.visualize_gnome --genome-path <path-to-genome.pkl> --use-optim-obj
+```
 
 ### Demo example of extension to manipulation.
 Demonstrate a simple example that uses differentiable physics to optimize a hand-like soft robot to throw a snowball.
@@ -78,7 +113,13 @@ We provide a simple script to convert a 3D mesh into points (which can be consum
 $ python -m softzoo.tools.annotate_mesh --mesh-path ./softzoo/assets/meshes/stl/Hippo.stl --out-path ./softzoo/assets/meshes/pcd/Hippo.pcd --n-clusters 5
 ```
 
-### (TODO) Generate terrain texture.
+### Generate terrain texture.
+We construct terrain based on a procedurally generated height map and synthesized texture attached to the surface mesh. We use the texture synthesis tool, [texturize](https://github.com/texturedesign/texturize).
 
+Additionally required packages: `texturize`.
+```
+$ python -m softzoo.tools.generate_texture --input-path ./softzoo/assets/textures/ground.png --output-path ./local/test_texturize.png
+```
 
-## (TODO) Render with GL
+## Render with GL
+TBU

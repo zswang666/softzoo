@@ -47,6 +47,7 @@ ENVIRONMENT:
       particle_id: 3 # used as robot id
       material: DiffAquaMuscle
       particle_info:
+        muscle_direction: [1., 0., 0.] # default muscle direction if not set
         p_rho_0: 1.e+3
         E_0: 1.e+5
       semantic_id: 3

@@ -27,7 +27,7 @@ class WassersteinBarycenter(Base):
         super(WassersteinBarycenter, self).__init__(env)
 
         # Read processed base shape in voxel grid
-        self.basis_names = ['orca_canonical', 'great_white_shark_canonical', 'fish4_canonical']
+        self.basis_names = ['Orca', 'GreatWhiteShark', 'Fish_2']
         data = dict()
         curr_dir = os.path.dirname(__file__)
         for k in self.basis_names:
@@ -44,10 +44,10 @@ class WassersteinBarycenter(Base):
         niter = 10
 
         # Extract actuator from annotated PCDs
-        self.pcd_names = ['orca_2', 'great_white_shark_2', 'fish4_2']
+        self.pcd_names = ['Orca', 'GreatWhiteShark', 'Fish_2']
         pcd = dict()
         for k in self.pcd_names:
-            pcd_path = os.path.join(curr_dir, f'../../dsrc/assets/meshes/pcd/{k}.pcd')
+            pcd_path = os.path.join(curr_dir, f'../../softzoo/assets/meshes/pcd/{k}.pcd')
             pcd[k] = o3d.io.read_point_cloud(pcd_path)
 
         bbox_bounds = []
@@ -77,9 +77,9 @@ class WassersteinBarycenter(Base):
 
         if self.use_pcd_basis:
             act_mapping = { # HACK
-                'orca_2': [0, 1, 2, 3, 4],
-                'great_white_shark_2': [0, 4, 3, 2, 1],
-                'fish4_2': [0, 2, 1, 4, 3],
+                'Orca': [0, 1, 2, 3, 4],
+                'GreatWhiteShark': [0, 4, 3, 2, 1],
+                'Fish_2': [0, 2, 1, 4, 3],
             }
             passive_color = np.array([0, 0, 0])
 
