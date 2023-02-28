@@ -35,6 +35,7 @@ $ pip install -r requirments.txt
 * [pytorch3d-0.7.2](https://pypi.org/search/?q=pytorch3d)
 * [roma-1.3.1](https://pypi.org/project/roma/)
 * [neat-python-0.92](https://neat-python.readthedocs.io/en/latest/installation.html)
+* [opencv-python-4.7.0.72](https://pypi.org/project/opencv-python/)
 ### Install SoftZoo.
 ```
 $ git clone git@github.com:zswang666/softzoo.git
@@ -122,4 +123,30 @@ $ python -m softzoo.tools.generate_texture --input-path ./softzoo/assets/texture
 ```
 
 ## Render with GL
-TBU
+Other than the built-in renderer in Taichi's GGUI, we also use a rendering tool adapted from [FluidLab](https://github.com/zhouxian/FluidLab) for better visual effect. This renderer is based on GL and [NVIDIA FleX](https://developer.nvidia.com/flex#:~:text=FleX%20is%20a%20particle%20based,%2C%20fluids%2C%20clothing%2C%20etc.), and it requires compilation.
+
+First we need to download [docker](https://docs.docker.com/engine/install/ubuntu/) and [nvidia-docker](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#setting-up-docker). Please follow the instructions from both links. Also, remember to install nvidia-docker and [pybind11](https://anaconda.org/conda-forge/pybind11),
+
+```
+$ sudo apt-get install -y nvidia-docker2
+$ conda install -c conda-forge pybind11
+```
+
+Then we can start the compilation.
+
+```
+$ cd softzoo/engine/renderer/gl_renderer_src/
+$ bash build_docker.sh
+$ bash run_docker.sh
+# inside the docker container
+$ . /home/<username>/anaconda3/bin/activate softzoo # remember to replace the username
+$ . prepare.sh
+$ . compile.sh
+```
+You should see `[100%] Built target flex_renderer` at the end of the compilation and `flex_renderer.cpython-38-x86_64-linux-gnu.so` in the folder `gl_renderer_src/`.
+
+Additionally required packages: `opencv-python`.
+
+```
+$ bash scripts/render.sh
+```

@@ -2,4 +2,4 @@
 
 ### Build image
 sudo chmod 666 /var/run/docker.sock
-sudo docker build -t tsunw/flex .
+sudo docker build -t flex .

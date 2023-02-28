@@ -7,8 +7,4 @@ sudo nvidia-docker run \
   --gpus all \
   -e DISPLAY=$DISPLAY \
   -e QT_X11_NO_MITSHM=1 \
-  -it tsunw/flex:latest bash
-
-. /home/tsunw/anaconda3/bin/activate codesign
-. prepare.sh
-. compile.sh
+  -it flex:latest bash
