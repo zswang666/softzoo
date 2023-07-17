@@ -21,7 +21,7 @@ $ conda activate softzoo
 ```
 $ pip install taichi==1.4.1
 $ conda install pytorch torchvision pytorch-cuda=11.7 -c pytorch -c nvidia
-$ pip install -r requirments.txt
+$ pip install -r requirements.txt
 ```
 ### Other packages.
 (only required in some of the experiments/tools; also while we only tested with the following versions, other versions may still work).
